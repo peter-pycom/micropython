@@ -186,3 +186,47 @@ productive, please be sure to follow the
 and the [Code Conventions](https://github.com/micropython/micropython/blob/master/CODECONVENTIONS.md).
 Note that MicroPython is licenced under the MIT license, and all contributions
 should follow this license.
+
+F01 S3 beta3
+------------
+
+
+IDF:
+  cd ~/docs/esp-idf-master
+  git checkout 731f16fc6a
+  git submodule update --init --recursive && git clean -d -f -f
+  cd esp-idf-master
+  ./install.sh
+  source export.sh
+
+xtensa:
+  Please try the following toolchain which should fix the linking issue and still work with 7.2.7 chip:
+
+  https://dl.espressif.com/dl/toolchains/preview/s3/xtensa-esp32s3-elf-gcc8_4_0-esp-2020r3-5-gc65c037-linux-amd64.tar.gz
+
+  https://dl.espressif.com/dl/toolchains/preview/s3/xtensa-esp32s3-elf-gcc8_4_0-esp-2020r3-5-gc65c037-linux-armel.tar.gz
+
+  https://dl.espressif.com/dl/toolchains/preview/s3/xtensa-esp32s3-elf-gcc8_4_0-esp-2020r3-5-gc65c037-linux-i686.tar.gz
+
+  https://dl.espressif.com/dl/toolchains/preview/s3/xtensa-esp32s3-elf-gcc8_4_0-esp-2020r3-5-gc65c037-macos.tar.gz
+
+  https://dl.espressif.com/dl/toolchains/preview/s3/xtensa-esp32s3-elf-gcc8_4_0-esp-2020r3-5-gc65c037-win32.zip
+
+  https://dl.espressif.com/dl/toolchains/preview/s3/xtensa-esp32s3-elf-gcc8_4_0-esp-2020r3-5-gc65c037-win64.zip
+
+  You will need to extract it somewhere on your computer and add the bin​ directory of the extracted toolchain to PATH, ahead of other paths, after running export.sh​.
+
+  which xtensa-esp32s3-elf-gcc
+  xtensa-esp32s3-elf-gcc --version
+
+MPY:
+  cd ~/micropython
+  git checkout master # 35fb90bd5
+  git submodule update --init --recursive && git clean -d -f -f
+  cd ports/esp32
+  trash build*
+  make BOARD=GENERIC_S3 PORT=/dev/ttyUSB1 deploy
+
+tips:
+  esptool.py -p /dev/ttyUSB1 -b 460800 --before default_reset --after hard_reset --chip esp32s3beta3 erase_flash
+
