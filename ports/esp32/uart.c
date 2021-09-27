@@ -45,7 +45,11 @@ void uart_init(void) {
 // all code executed in ISR must be in IRAM, and any const data must be in DRAM
 STATIC void IRAM_ATTR uart_irq_handler(void *arg) {
     volatile uart_dev_t *uart = &UART0;
-    #if CONFIG_IDF_TARGET_ESP32S3
+    #if CONFIG_IDF_TARGET_ESP32S3_BETA_VERSION_3
+    uart->int_clr.rxfifo_full = 1;
+    uart->int_clr.rxfifo_tout = 1;
+    uart->int_clr.frm_err = 1;
+    #elif CONFIG_IDF_TARGET_ESP32S3
     uart->int_clr.rxfifo_full_int_clr = 1;
     uart->int_clr.rxfifo_tout_int_clr = 1;
     #else
